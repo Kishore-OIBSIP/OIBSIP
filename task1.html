@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Georgia,serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: none;
+        }
+
+        .calculator {
+            border: 2px solid #E0FFFF;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .screen {
+            background-color:#00FFFF;
+            color: white;
+            padding: 10px;
+            text-align: right;
+        }
+
+        .input {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .output {
+            font-size: 1em;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            padding: 10px;
+            background-color: #00FFFF;
+        }
+
+        .button-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E0FFFF;
+            border: 1px solid #E0FFFF;
+            height: 60px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .button-box:hover {
+            background-color: #7FFFD4;
+        }
+
+        .button {
+            font-size: 1.2em;
+        }
+
+        
+        #equals {
+            grid-column: 3 / span 2;
+        }
+
+        #clear {
+            grid-column: 1 / span 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="screen">
+            <div class="input" id="input">0</div>
+            <div class="output" id="output">0</div>
+        </div>
+        <div class="buttons">
+            <div class="button-box" onclick="handleButtonClick('7')"><div class="button">7</div></div>
+            <div class="button-box" onclick="handleButtonClick('8')"><div class="button">8</div></div>
+            <div class="button-box" onclick="handleButtonClick('9')"><div class="button">9</div></div>
+            <div class="button-box" onclick="handleButtonClick('/')"><div class="button">/</div></div>
+            <div class="button-box" onclick="handleButtonClick('4')"><div class="button">4</div></div>
+            <div class="button-box" onclick="handleButtonClick('5')"><div class="button">5</div></div>
+            <div class="button-box" onclick="handleButtonClick('6')"><div class="button">6</div></div>
+            <div class="button-box" onclick="handleButtonClick('*')"><div class="button">*</div></div>
+            <div class="button-box" onclick="handleButtonClick('1')"><div class="button">1</div></div>
+            <div class="button-box" onclick="handleButtonClick('2')"><div class="button">2</div></div>
+            <div class="button-box" onclick="handleButtonClick('3')"><div class="button">3</div></div>
+            <div class="button-box" onclick="handleButtonClick('-')"><div class="button">-</div></div>
+            <div class="button-box" id="clear" onclick="handleButtonClick('clear')"><div class="button">C</div></div>
+            <div class="button-box" onclick="handleButtonClick('0')"><div class="button">0</div></div>
+            <div class="button-box" onclick="handleButtonClick('.')"><div class="button">.</div></div>
+            <div class="button-box" onclick="handleButtonClick('+')"><div class="button">+</div></div>
+            <div class="button-box" onclick="handleButtonClick('enter')"><div class="button">=</div></div>
+            <div class="button-box" onclick="handleButtonClick('delete')"><div class="button">DEL</div></div>
+            <div class="button-box" onclick="handleButtonClick('&gt;')"><div class="button">&gt;</div></div>
+            <div class="button-box" onclick="handleButtonClick('&lt;')"><div class="button">&lt;</div></div>
+            <div class="button-box" onclick="handleButtonClick('sqrt')"><div class="button">√</div></div>
+            <div class="button-box" onclick="handleButtonClick('%')"><div class="button">%</div></div>
+        </div>
+    </div>
+    <script>
+  const inputDisplay = document.getElementById("input");
+        const outputDisplay = document.getElementById("output");
+        let input = "";
+
+        function updateDisplay() {
+            inputDisplay.textContent = input;
+        }
+
+        function handleButtonClick(value) {
+            if (value === "enter") {
+                try {
+                    const result = eval(input);
+                    outputDisplay.textContent = result;
+                } catch (error) {
+                    outputDisplay.textContent = "Error";
+                }
+            } else if (value === "clear") {
+                input = "";
+                outputDisplay.textContent = "0";
+            } else if (value === "delete") {
+                input = input.slice(0, -1);
+            } else if (value === "sqrt") {
+                if (input !== "") {
+                    try {
+                        const sqrtResult = Math.sqrt(parseFloat(input));
+                        outputDisplay.textContent = sqrtResult;
+                        input = ""; // Clear the input after taking square root
+                    } catch (error) {
+                        outputDisplay.textContent = "Error";
+                    }
+                }
+            } else if (value === "%") {
+                input += "/100";
+            } else {
+                input += value;
+            }
+            updateDisplay();
+        }
+
+        const buttons = document.querySelectorAll(".button-box .button");
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const buttonValue = button.textContent;
+                if (buttonValue === "DEL") {
+                    handleButtonClick("delete");
+                } else if (buttonValue === "√") {
+                    handleButtonClick("sqrt");
+                } else {
+                    handleButtonClick(buttonValue);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
